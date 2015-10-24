@@ -6,7 +6,7 @@ module.exports = {
  	    user:'',
 	   	password:'',
 		port:27017,
-        database: 'test-db'
+        database: 'hackathon'
     }
 /*
  	mongo:{

@@ -1,17 +1,15 @@
 var _braintree = require("braintree");
 
 var Braintree = function(){
-
-	var environment = _braintree.Environment[BRAINTREE_ENVIRONMENT]
 	
 	var options = {
-		environment:  environment,
+		environment:  _braintree.Environment.Sandbox,
 	 	merchantId:   BRAINTREE_MERCHANT_ID,
 	 	publicKey:    BRAINTREE_PUBLIC_KEY,
 	 	privateKey:   BRAINTREE_PRIVATE_KEY
 	}
 
-	this.gateway =  braintree.connect(options);
+	this.gateway =  _braintree.connect(options);
 }
 
 Braintree.prototype.customer = function(){
@@ -68,6 +66,7 @@ Braintree.prototype.merchant = function(){
 
 			return {
 				exec:function(cb){
+
 					self.gateway.merchantAccount.create(params, function(err, result){
 						if(err) return cb(err)
 						return cb(null, result)
