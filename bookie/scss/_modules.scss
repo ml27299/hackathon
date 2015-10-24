@@ -1,0 +1,48 @@
+body {
+  color: #444;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
+
+.event__container {
+  text-align: center;
+}
+
+.ratio-setter {
+  font-size: 120px;
+  font-weight: 100;
+  margin-top: 50px;
+}
+
+.exchange {
+  margin-top: 30px;
+}
+
+.video-placeholder {
+  background-color: #eee;
+  height: 210px;
+
+  &:after {
+    display: block;
+    content: 'VIDEO';
+    font-size: 50px;
+    font-weight: 900;
+    line-height: 200px;
+    text-align: center;
+  }
+}
+
+.bets-placehlder {
+  background-color: #eee;
+  height: 350px;
+  margin-top: 10px;
+
+  &:after {
+    display: block;
+    content: 'BETS';
+    font-size: 50px;
+    font-weight: 900;
+    line-height: 350px;
+    text-align: center;
+  }
+}
