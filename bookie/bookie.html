@@ -10,43 +10,78 @@
     </nav>
 
     <div class="container">
-        <h1 class="book-title">Betting Bob's Books</h1>
+        <h1 class="book-title">{{bookie.event.name}}</h1>
     </div>
 
     <div class="container event__container">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-7">
                 <header class="row">
                     <div class="col-lg-5">
-                        <h2>Red</h2>
-                        <h4 class="loss">-$1000</h4>
-                        <button class="btn btn-default">Bet on Red</button>
+                        <h2>{{bookie.competitor_1.name}}</h2>
+                        <h4 ng-class="{
+                            gain: bookie.getSpread(bookie.competitor_1, 1) > 0,
+                            loss: bookie.getSpread(bookie.competitor_1, 1) < 0}">
+                            {{bookie.getSpread(bookie.competitor_1, 1) | currency}}</h4>
+                        <!--<button class="btn btn-default">Bet on {{bookie.competitor_1.name}}</button>-->
                     </div>
+
                     <div class="col-lg-2">
                         <h2>vs.</h2>
                     </div>
+
                     <div class="col-lg-5">
-                        <h2>Blue</h2>
-                        <h4 class="gain">+$100</h4>
-                        <button class="btn btn-default">Bet on Blue</button>
+                        <h2>{{bookie.competitor_2.name}}</h2>
+
+                        <h4 ng-class="{
+                            gain: bookie.getSpread(bookie.competitor_2, 2) > 0,
+                            loss: bookie.getSpread(bookie.competitor_2, 2) < 0}">{{bookie.getSpread(bookie.competitor_2, 2) | currency}}</h4>
+                        <!--<button class="btn btn-default">Bet on {{bookie.competitor_2.name}}</button>-->
                     </div>
                 </header>
 
-                <div class="row ratio-setter">
-                    <div class="col-lg-5">1</div>
+                <div class="row odds-setter">
+                    <div class="col-lg-5">
+                        <input type="number" class="big-ass-number"
+                               ng-model="bookie.competitor_1_odds"/>
+                    </div>
                     <div class="col-lg-2">:</div>
-                    <div class="col-lg-5">10</div>
+                    <div class="col-lg-5">
+                        <input type="number" class="big-ass-number"
+                               ng-model="bookie.competitor_2_odds"/>
+                    </div>
                 </div>
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <button class="btn btn-default">Edit Odds</button>
+                        <button class="btn btn-block btn-default"
+                                ng-click="bookie.editOdds(bookie.competitor_1_odds, bookie.competitor_2_odds)">
+                            Edit Odds
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+
+            <div class="col-lg-5">
+                <h4 class="text-left">Recent Bets</h4>
+                <table class="table text-left">
+                    <tr>
+                        <th>Competitor</th>
+                        <th>Amount</th>
+                        <th>Odds</th>
+                    </th>
+                    <tr ng-repeat="bet in bookie.bets | orderBy:'timestamp':true">
+                        <td>{{bet.competitor}}</td>
+                        <td>{{bet.cash_amount | currency:'$'}}</td>
+                        <td>{{bet.odds}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row video__container">
+            <div class="col-lg-12">
                 <div class="video-placeholder"></div>
-                <div class="bets-placehlder"></div>
             </div>
         </div>
     </div>

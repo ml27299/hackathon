@@ -1,0 +1,44 @@
+<div>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    BetChain
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>{{(gambler.user.balance || 0) | currency}}</h1>
+            <h4 class="text-center">{{gambler.event.name}}</h4>
+        </header>
+
+        <div class="text-center">
+            <h2>{{gambler.competitor_1.name}} vs. {{gambler.competitor_2.name}}</h2>
+            <h4>{{gambler.odds[0]}} : {{gambler.odds[1]}}</h4>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon">$</div>
+                    <input type="text" class="form-control"
+                           ng-model="bet"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="container form-group">
+            <button class="btn btn-block btn-default btn-lg"
+                    ng-click="gambler.makeBet(bet, gambler.competitor_1.id)">
+                Bet {{gambler.competitor_1.name}} +{{gambler.getPayout(bet, 1) | currency:'$':0}}
+            </button>
+
+            <button class="btn btn-block btn-default btn-lg"
+                    ng-click="gambler.makeBet(bet, gambler.competitor_2.id)">
+                Bet {{gambler.competitor_2.name}} +{{gambler.getPayout(bet, 2) | currency:'$':0}}
+            </button>
+        </div>
+    </div>
+</div>
