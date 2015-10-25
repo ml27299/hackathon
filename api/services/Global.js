@@ -1,4 +1,5 @@
 module.exports = {
+	
 	randomEmail : function(){
 	    var text = "";
 	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

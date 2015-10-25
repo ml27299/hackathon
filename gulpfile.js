@@ -1,3 +1,4 @@
+require('es6-promise').polyfill();
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')({lazy: true});
 
