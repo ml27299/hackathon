@@ -1,6 +1,12 @@
 module.exports = {
-	name:'string',
-	competitor_1:'string',
-	competitor_2:'string',
-	odds:'string'
+	attributes : {
+		name:'string',
+		competitor_1:{
+			model:'competitors'
+		},
+		competitor_2:{
+			model:'competitors'
+		},
+		odds:'string'
+	}
 }

@@ -1,7 +1,11 @@
 module.exports = {
 	attributes:{
 		email:'email',
-		customerId:'string',
+		balance:{
+			type : 'float',
+			defaultsTo:500.00
+		},
+		//customerId:'string',
 		merchantId:'string'
 	}
 }

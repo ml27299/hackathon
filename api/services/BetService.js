@@ -10,12 +10,12 @@ module.exports = {
 				json: true,
 				url: BASECHAINURL+'/chain/bet'
 			}
-
+			console.log(options)
 			return {
 				exec : function(cb){
 					request.post(options, function (err, httpResponse, response) {
 						if(err) return cb(err)
-						if(httpResponse.statusCode !== 200) return cb('Response Code: '+httpResponse.statusCode)
+						if(httpResponse.statusCode !== 200 && httpResponse.statusCode !== 201) return cb('Response Code: '+httpResponse.statusCode)
 
 					  	return cb(null, response)
 
@@ -39,9 +39,9 @@ module.exports = {
 
 			return {
 				exec : function(cb){
-					request.get(setup, function (err, httpResponse, response) {
+					request.get(options, function (err, httpResponse, response) {
 						if(err) return cb(err)
-						if(httpResponse.statusCode !== 200) return cb('Response Code: '+httpResponse.statusCode)
+						if(httpResponse.statusCode !== 200 && httpResponse.statusCode !== 201) return cb('Response Code: '+httpResponse.statusCode)
 
 						return cb(null, JSON.parse(response))
 					})

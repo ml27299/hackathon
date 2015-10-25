@@ -95,6 +95,7 @@ module.exports = {
 	},
 
 	getInfo : function(user, cb){
+		var Braintree = BraintreeService.init()
 		// Braintree.customer().find({id:user.customerId}).exec(function(err, customerResponse){
 		// 	if(err) return cb(err)
 

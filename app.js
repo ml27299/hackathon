@@ -68,11 +68,19 @@ orm = appModels.init(Waterline, orm)
 var app = express();
 var session = require('express-session')
 
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 1000 * 60 * 60 * 24 }}))
 
-app.use(function(req, res, next){
-  next()
-})
+var cors = require('cors')
+app.use(cors());
+
+
+// app.all('*', function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//   res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+  
+//   next();
+//  });
 
 orm.initialize(config, function(err, models) {
   if(err) throw err;

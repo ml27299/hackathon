@@ -9,16 +9,19 @@ module.exports = {
 	},
 
 	events : function(req, res){
-		$.Events.find().exec(function(err, events){
+		$.Events.find().populate('competitor_1').populate('competitor_2').exec(function(err, events){
 			if(err) return res.status(500).end(err)
-			return res.status(200).json({events:events})
+
+			$.Bookies.find().exec(function(err, bookies){
+				return res.status(200).json({events:events, bookies:bookies})
+			})
 		})
 	},
 
 	editEvent : function(req, res){
-		if(!req.session.email) return res.status(500).end('No logged in user')
+		if(!req.body.email) return res.status(500).end('No logged in user')
 
-		$.Bookies.findOne({email:req.session.email}).exec(function(err, bookie){
+		$.Bookies.findOne({email:req.body.email}).exec(function(err, bookie){
 			if(err) return res.status(500).end(err)
 			if(!bookie) return res.status(500).end(err)
 
@@ -26,7 +29,7 @@ module.exports = {
 
 			$.Events.findOne({id:eventId}).exec(function(err, event){
 				if(err) return res.status(500).end(err)
-
+				//console.log(event)
 				event.odds = req.body.odds
 
 				event.save(function(err){
