@@ -21,7 +21,6 @@
         vm.competitor_1_ratio = vm.competitor_1_odds / vm.competitor_2_odds;
         vm.competitor_2_ratio = vm.competitor_2_odds / vm.competitor_1_odds;
 
-        bookieService.getBets();
         $interval(bookieService.getBets, 1500);
 
         vm.editOdds = bookieService.editOdds;

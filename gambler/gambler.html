@@ -11,7 +11,7 @@
 
     <div class="container">
         <header>
-            <h1 class="gain">+$500</h1>
+            <h1>{{(gambler.user.balance || 0) | currency}}</h1>
             <h4 class="text-center">{{gambler.event.name}}</h4>
         </header>
 

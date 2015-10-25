@@ -15,7 +15,6 @@
         //////////
 
         function makeBet(bet, competitor) {
-            console.log('event: ', event.get());
             $http({
                 method: 'POST',
                 url: api + 'send/bet/' + event.get().id,
@@ -25,7 +24,15 @@
                     competitor: competitor,
                     email: user.get().email
                 }
-            });
+            })
+                .success(successCallback);
+
+            //////////
+
+            function successCallback(response) {
+                console.log('response: ', response);
+                user.set(response.client);
+            }
         }
     }
 })();

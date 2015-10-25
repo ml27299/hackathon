@@ -13,7 +13,8 @@
                 controller: 'BookieCtrl as bookie',
                 templateUrl: 'bookie.html',
                 resolve: {
-                    preload: preload
+                    preload: preload,
+                    bets: ['bookieService', function(bookieService) {return bookieService.getBets();}]
                 }
             })
             .otherwise('/');
