@@ -44,11 +44,15 @@ module.exports = {
   						if(err) return res.status(500).end(err)
 
   						//req.session.email = email
-  						return res.status(200).json({ made: 'it' })
+  						return res.status(200).json({ sub_merchant: merchantResponse, customer : customerResponse })
   					})
   				})
   			})
 		})
+	},
+
+	editOdds : function(req, res){
+
 	},
 
 	sendBet : function(req, res){
