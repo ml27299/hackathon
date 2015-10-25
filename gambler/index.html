@@ -6,20 +6,20 @@
     <meta name="description" content="BetChain Betting Block Chain">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>BetChain - Books</title>
+    <title>BetChain</title>
 
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
 
     <!-- inject:css -->
-    <link rel="stylesheet" href="/bookie.css">
+    <link rel="stylesheet" href="/gambler.css">
     <!-- endinject -->
 </head>
 
 <body>
 
-<div id="bookie-container">
+<div id="gambler-container">
     <div ng-view></div>
 </div>
 
@@ -31,10 +31,12 @@
 <!-- endbower -->
 
 <!-- inject:js -->
-<script src="bookie.module.js"></script>
-<script src="bookie.controller.js"></script>
-<script src="bookie.service.js"></script>
+<script src="gambler.module.js"></script>
 <script src="event.service.js"></script>
+<script src="gambler.config.js"></script>
+<script src="gambler.controller.js"></script>
+<script src="gambler.service.js"></script>
+<script src="user.service.js"></script>
 <!-- endinject -->
 </body>
 

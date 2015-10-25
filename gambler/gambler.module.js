@@ -10,8 +10,8 @@
     function routeConfig($routeProvider) {
         $routeProvider
             .when('/', {
-                controller: 'BookieCtrl as bookie',
-                templateUrl: 'bookie.html',
+                controller: 'GamblerCtrl as gambler',
+                templateUrl: 'gambler.html',
                 resolve: {
                     preload: preload
                 }
@@ -39,8 +39,8 @@
             }
 
             function successCallback(response) {
-                event.bookie = response.bookies[0];
                 event.set(response.events[0]);
+                event.bookie = response.bookies[0];
                 deferred.resolve(response);
             }
         }
