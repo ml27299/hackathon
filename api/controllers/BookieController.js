@@ -9,7 +9,7 @@ module.exports = {
 
 			var Braintree = BraintreeService.init()
 
-			Braintree.customer().create({email:email}).exec(function(err, response){
+			Braintree.customer().create({email:email}).exec(function(err, customerResponse){
   				if(err) return res.status(500).end(err)
 
   				var merchantParams = {
@@ -35,16 +35,19 @@ module.exports = {
 					  masterMerchantAccountId: "hackathon",
   				}
 
-  				Braintree.merchant().create(merchantParams).exec(function(err, response){
+  				Braintree.merchant().create(merchantParams).exec(function(err, merchantResponse){
   					if(err) return res.status(500).end(err)
 
   					params = {email:email, merchantId:merchantResponse.merchantAccount.id, customerId:customerResponse.customer.id}
 
-  					$.Bookies.create(params).exec(function(err, client){
+  					$.Bookies.create(params).exec(function(err, bookie){
   						if(err) return res.status(500).end(err)
 
-  						//req.session.email = email
-  						return res.status(200).json({ sub_merchant: merchantResponse, customer : customerResponse })
+  						Braintree.merchant().find({id:bookie.merchantId}).exec(function(err, merchantResponse){
+  							if(err) return res.status(500).end(err)
+  							//req.session.email = email
+  							return res.status(200).json({ sub_merchant: merchantResponse, customer : customerResponse })
+  						})
   					})
   				})
   			})

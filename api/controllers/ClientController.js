@@ -42,9 +42,12 @@ module.exports = {
 
   					$.Clients.create(params).exec(function(err, client){
   						if(err) return res.status(500).end(err)
-
-  						req.session.email = email
-  						return res.status(200).json({ sub_merchant: merchantResponse, customer : customerResponse })
+  							
+  						Braintree.merchant().find({id:bookie.merchantId}).exec(function(err, merchantResponse){
+  							if(err) return res.status(500).end(err)
+  							//req.session.email = email
+  							return res.status(200).json({ sub_merchant: merchantResponse, customer : customerResponse })
+  						})
   					})
   				})
   			})
