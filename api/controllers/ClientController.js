@@ -1,16 +1,24 @@
 
 module.exports = {
 	index : function(req, res){
+		var Braintree = BraintreeService.init()
 
-		if(req.session.email) return res.status(200)
+		if(req.session.email){
+			$.Clients.findOne({email:req.session.email}).exec(function(err, client){
+				if(err) return res.status(500).end(err)
+
+				BraintreeService.getInfo(client, function(err, response){
+					if(err) return res.status(500).end(err)
+					return res.status(200).json({ sub_merchant: response.merchantInfo, customer : response.customerInfo })
+				})
+			})
+		}
 
 		Global.checkUniqueness('Clients', function(err, email){
 			if(err) return res.status(500).end(err)
 
-			var Braintree = BraintreeService.init()
-
-			Braintree.customer().create({email:email}).exec(function(err, customerResponse){
-  				if(err) return res.status(500).end(err)
+			// Braintree.customer().create({email:email}).exec(function(err, customerResponse){
+  				//if(err) return res.status(500).end(err)
 
   				var merchantParams = {
   					individual: {
@@ -38,19 +46,19 @@ module.exports = {
   				Braintree.merchant().create(merchantParams).exec(function(err, merchantResponse){
   					if(err) return res.status(500).end(err)
 
-  					params = {email:email, merchantId:merchantResponse.merchantAccount.id, customerId:customerResponse.customer.id}
+  					params = {email:email, merchantId:merchantResponse.merchantAccount.id}
 
   					$.Clients.create(params).exec(function(err, client){
   						if(err) return res.status(500).end(err)
-  							
-  						Braintree.merchant().find({id:bookie.merchantId}).exec(function(err, merchantResponse){
+
+  						BraintreeService.getInfo(client, function(err, response){
   							if(err) return res.status(500).end(err)
   							//req.session.email = email
-  							return res.status(200).json({ sub_merchant: merchantResponse, customer : customerResponse })
+  							return res.status(200).json({ sub_merchant: response.merchantInfo })
   						})
   					})
-  				})
-  			})
+  			 	})
+  			// })
 		})
 	}
 }

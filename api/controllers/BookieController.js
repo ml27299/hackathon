@@ -2,15 +2,23 @@ module.exports = {
 
 	index : function(req, res){
 
-		if(req.session.email) return res.status(200)
+		if(req.session.email){
+			$.Bookies.findOne({email:req.session.email}).exec(function(err, bookie){
+				if(err) return res.status(500).end(err)
+
+				BraintreeService.getInfo(bookie, function(err, response){
+					if(err) return res.status(500).end(err)
+					return res.status(200).json({ sub_merchant: response.merchantInfo, customer : response.customerInfo })
+				})
+			})
+		}
 
 		Global.checkUniqueness('Bookies', function(err, email){
 			if(err) return res.status(500).end(err)
 
-			var Braintree = BraintreeService.init()
 
-			Braintree.customer().create({email:email}).exec(function(err, customerResponse){
-  				if(err) return res.status(500).end(err)
+			// Braintree.customer().create({email:email}).exec(function(err, customerResponse){
+  				//if(err) return res.status(500).end(err)
 
   				var merchantParams = {
   					individual: {
@@ -38,19 +46,19 @@ module.exports = {
   				Braintree.merchant().create(merchantParams).exec(function(err, merchantResponse){
   					if(err) return res.status(500).end(err)
 
-  					params = {email:email, merchantId:merchantResponse.merchantAccount.id, customerId:customerResponse.customer.id}
+  					params = {email:email, merchantId:merchantResponse.merchantAccount.id}
 
   					$.Bookies.create(params).exec(function(err, bookie){
   						if(err) return res.status(500).end(err)
 
-  						Braintree.merchant().find({id:bookie.merchantId}).exec(function(err, merchantResponse){
+  						BraintreeService.getInfo(bookie, function(err, response){
   							if(err) return res.status(500).end(err)
   							//req.session.email = email
-  							return res.status(200).json({ sub_merchant: merchantResponse, customer : customerResponse })
+  							return res.status(200).json({ sub_merchant: response.merchantInfo })
   						})
   					})
   				})
-  			})
+  			//})
 		})
 	},
 
@@ -90,5 +98,46 @@ module.exports = {
 			if(err) return res.status(500).end(err)
 			return res.status(200).json({ made: 'it' })
 		})
+	},
+
+	payoutBets : function(req, res){
+		var Braintree = BraintreeService.init()
+
+		var test = [
+			{merchantAccountId : 'nwuuu_wgmfq_instant_m2j4v5mb', paymentMethodNonce : 'fake-valid-nonce', amount : 2.00, serviceFeeAmount: 0.00 },
+			{merchantAccountId : 'lqvcn_hnmma_instant_8b4z2g68', paymentMethodNonce : 'fake-valid-nonce', amount : 4.00, serviceFeeAmount: 0.00 }
+		]
+
+		async.eachSeries(test, function(item, cb){
+			Braintree.merchant().sale(item).exec(function(err, response){
+				if(err) return cb(err)
+				else{
+					console.log(response)
+					cb()
+				}
+			})
+		}, function(err){
+			if(err) return res.status(500).end(err)
+			return res.status(200).json({made:'it'})
+		})
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

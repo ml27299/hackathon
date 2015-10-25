@@ -73,13 +73,36 @@ Braintree.prototype.merchant = function(){
 					})
 				}
 			}
+		},
+
+		sale:function(params){
+
+			return {
+				exec:function(cb){
+					self.gateway.transaction.sale(params, function (err, result) {
+						if(err) return cb(err)
+						return cb(null, result)
+					})
+				}
+			}
 		}
 	}
 }
 
-
 module.exports = {
 	init:function(credentials){
 		return new Braintree()
+	},
+
+	getInfo : function(user, cb){
+		// Braintree.customer().find({id:user.customerId}).exec(function(err, customerResponse){
+		// 	if(err) return cb(err)
+
+			Braintree.merchant().find({id:user.merchantId}).exec(function(err, merchantResponse){
+	  			if(err) return cb(err)
+
+	  			return cb(null, {merchantInfo : merchantResponse})
+	  		})
+		//})
 	}
 }
