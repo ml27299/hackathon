@@ -37,14 +37,14 @@ module.exports = {
 
   				Braintree.merchant().create(merchantParams).exec(function(err, merchantResponse){
   					if(err) return res.status(500).end(err)
-  					
+
   					params = {email:email, merchantId:merchantResponse.merchantAccount.id, customerId:customerResponse.customer.id}
 
   					$.Clients.create(params).exec(function(err, client){
   						if(err) return res.status(500).end(err)
 
-  						//req.session.email = email
-  						return res.status(200).json({ made: 'it' })
+  						req.session.email = email
+  						return res.status(200).json({ sub_merchant: merchantResponse, customer : customerResponse })
   					})
   				})
   			})
